@@ -36,6 +36,7 @@ namespace LiveSplit.HitCounterManagerConnector
     {
         private LiveSplitState CurrentState;
         public Process RemoteProcess { get; internal set; }
+        private int Hits = 0;
 
         public HitCounterManagerConnectorComponent(LiveSplitState state)
         {
@@ -127,7 +128,29 @@ namespace LiveSplit.HitCounterManagerConnector
         public override XmlNode GetSettings(XmlDocument document) => Settings.GetSettings(document);
         public override void SetSettings(XmlNode settings) => Settings.SetSettings(settings);
 
-        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) { }
+        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
+        {
+            int new_hits = ParseInt0(CurrentState.Run.Metadata.CustomVariableValue("hits"));
+            int diff = new_hits - Hits;
+            for (int i = 0; i < diff; i++)
+            {
+                SendUpdate(SC_Type.SC_Type_Hit);
+            }
+
+            Hits = new_hits;
+        }
+
+        private static int ParseInt0(string s)
+        {
+            if (int.TryParse(s, out int i))
+            {
+                return i;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         /// <summary>
         /// Definitions from HitCounterManager
