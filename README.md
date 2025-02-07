@@ -14,7 +14,7 @@ A [LiveSplit](http://livesplit.org/) plugin that connects LiveSplit with the [Hi
 
 ## Systemrequirements
 * Operating System: Windows
-* [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) or newer
+* [.NET Framework 4.8.1 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) or newer
 
 ## Installation, Guides, Help
 Extract the ZIP file into the installation folder of LiveSplit.  
