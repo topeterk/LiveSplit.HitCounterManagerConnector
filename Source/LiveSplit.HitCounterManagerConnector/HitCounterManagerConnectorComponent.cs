@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright (c) 2022-2022 Peter Kirmeier
+//Copyright (c) 2022-2026 Peter Kirmeier
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,6 @@ namespace LiveSplit.HitCounterManagerConnector
 
         private void SendUpdate(SC_Type type)
         {
-            Console.WriteLine("PK: " + type.ToString());
             if (null == RemoteProcess) Connect(); // Try to reconnect
             if (null != RemoteProcess) // Reconnected or still connected?
             {
