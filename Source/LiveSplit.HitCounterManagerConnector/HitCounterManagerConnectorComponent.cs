@@ -43,7 +43,7 @@ namespace LiveSplit.HitCounterManagerConnector
             Settings.Reconnect += Settings_Reconnect;
 
             CurrentState = state;
-            CurrentState.OnReset += (object sender, TimerPhase value) => State_OnReset(sender, null);
+            CurrentState.OnReset += State_OnReset;
             CurrentState.OnSplit += State_OnSplit;
             CurrentState.OnSkipSplit += State_OnSplit;
             CurrentState.OnUndoSplit += State_OnUndoSplit;
@@ -52,7 +52,7 @@ namespace LiveSplit.HitCounterManagerConnector
 
         private void Settings_Reconnect(object sender, EventArgs e) => Connect();
 
-        private void State_OnReset(object sender, EventArgs e) => SendUpdate(SC_Type.SC_Type_Reset);
+        private void State_OnReset(object sender, TimerPhase value) => SendUpdate(SC_Type.SC_Type_Reset);
         private void State_OnSplit(object sender, EventArgs e) => SendUpdate(SC_Type.SC_Type_Split);
         private void State_OnUndoSplit(object sender, EventArgs e) => SendUpdate(SC_Type.SC_Type_SplitPrev);
 
@@ -121,7 +121,16 @@ namespace LiveSplit.HitCounterManagerConnector
 
         private HitCounterManagerConnectorSettings Settings { get; } = new HitCounterManagerConnectorSettings();
 
-        public override void Dispose() { }
+        public override void Dispose() 
+        {
+          Settings.Reconnect -= Settings_Reconnect;
+          Settings.SetConnectionInfo(null);
+
+          CurrentState.OnReset -= State_OnReset;
+          CurrentState.OnSplit -= State_OnSplit;
+          CurrentState.OnSkipSplit -= State_OnSplit;
+          CurrentState.OnUndoSplit -= State_OnUndoSplit;
+        }
 
         public override Control GetSettingsControl(LayoutMode mode) => Settings;
 
